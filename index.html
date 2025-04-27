@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Buddy 🦉</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2F80ED;
+            --income: #27AE60;
+            --expense: #EB5757;
+            --bg: #F8F9FA;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .buddy-header {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .buddy-header h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        #buddyFeedback {
+            font-size: 1.2em;
+            margin: 10px 0;
+            min-height: 24px;
+        }
+
+        .balance-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        #stressFreeToggle {
+            width: 100%;
+            margin-bottom: 10px;
+            background: #4CAF50;
+        }
+
+        #transactionForm {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .transaction-list {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .income { color: var(--income); }
+        .expense { color: var(--expense); }
+
+        #chartContainer {
+            margin-top: 20px;
+        }
+
+        .stress-free .transaction-item span:last-child,
+        .stress-free #balance {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Stress-Free Toggle -->
+        <button id="stressFreeToggle" onclick="toggleStressFree()">🌿 Stress-Free Mode</button>
+
+        <!-- Header -->
+        <div class="buddy-header">
+            <h1>Budget Buddy 🦉</h1>
+            <div id="buddyFeedback">🦉 "Let's get started!"</div>
+        </div>
+
+        <!-- Balance -->
+        <div class="balance-box">
+            <h3>Current Balance</h3>
+            <p id="balance">$0.00</p>
+        </div>
+
+        <!-- Add Transaction Form -->
+        <form id="transactionForm">
+            <input type="text" id="description" placeholder="Description" required>
+            <input type="number" id="amount" placeholder="Amount" step="0.01" required>
+            <select id="type">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+            </select>
+            <button type="submit">Add</button>
+        </form>
+
+        <!-- Transactions List -->
+        <div class="transaction-list">
+            <h3>Transactions</h3>
+            <div id="transactions"></div>
+        </div>
+
+        <!-- Chart -->
+        <div id="chartContainer">
+            <canvas id="budgetChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let transactions = JSON.parse(localStorage.getItem('budgetBuddy')) || [];
+        let questsCompleted = new Set();
+
+        // Initialize Chart
+        const ctx = document.getElementById('budgetChart').getContext('2d');
+        let chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Income', 'Expenses'],
+                datasets: [{
+                    data: [0, 0],
+                    backgroundColor: ['#27AE60', '#EB5757']
+                }]
+            }
+        });
+
+        // Update UI
+        function updateUI() {
+            localStorage.setItem('budgetBuddy', JSON.stringify(transactions));
+            
+            // Calculate balance
+            const balance = transactions.reduce((acc, t) => 
+                t.type === 'income' ? acc + t.amount : acc - t.amount, 0);
+            document.getElementById('balance').textContent = `$${balance.toFixed(2)}`;
+
+            // Update transactions list
+            const transactionsDiv = document.getElementById('transactions');
+            transactionsDiv.innerHTML = transactions.map((t, index) => `
+                <div class="transaction-item">
+                    <span>${t.description}</span>
+                    <span class="${t.type}">${t.type === 'income' ? '+' : '-'}$${t.amount.toFixed(2)}</span>
+                    <button onclick="deleteTransaction(${index})">🗑️</button>
+                </div>
+            `).join('');
+
+            // Update chart
+            const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
+            const expenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
+            chart.data.datasets[0].data = [income, expenses];
+            chart.update();
+
+            // Buddy feedback
+            const feedbackEl = document.getElementById('buddyFeedback');
+            if (transactions.length === 0) {
+                feedbackEl.textContent = '🦉 "Ready to begin?"';
+            } else if (balance < 0) {
+                feedbackEl.textContent = '🦉❌ "Let\'s adjust expenses!"';
+            } else {
+                feedbackEl.textContent = '🦉✅ "Looking good!"';
+            }
+
+            // Check quests
+            checkQuests();
+        }
+
+        // Quests system
+        function checkQuests() {
+            if (transactions.length >= 1 && !questsCompleted.has('firstTransaction')) {
+                alert('🎉 First step! Unlocked "Newbie Saver" badge!');
+                questsCompleted.add('firstTransaction');
+            }
+            if (transactions.length >= 5 && !questsCompleted.has('fiveTransactions')) {
+                alert('🏆 Unlocked "Consistent Tracker" badge!');
+                questsCompleted.add('fiveTransactions');
+            }
+        }
+
+        // Stress-free mode
+        function toggleStressFree() {
+            document.body.classList.toggle('stress-free');
+            const btn = document.getElementById('stressFreeToggle');
+            btn.textContent = document.body.classList.contains('stress-free') 
+                ? '🌿 Numbers Mode' 
+                : '🌿 Stress-Free Mode';
+        }
+
+        // Event listeners
+        document.getElementById('transactionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const description = document.getElementById('description').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const type = document.getElementById('type').value;
+
+            if (description && amount) {
+                transactions.push({ description, amount, type });
+                updateUI();
+                e.target.reset();
+            }
+        });
+
+        window.deleteTransaction = (index) => {
+            transactions.splice(index, 1);
+            updateUI();
+        };
+
+        // Initial load
+        updateUI();
+    </script>
+</body>
+</html>
