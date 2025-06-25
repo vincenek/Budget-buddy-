@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Buddy | AI Financial Assistant</title>
+    <meta name="theme-color" content="#4361ee">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%234361ee'/><text x='50' y='60' font-family='Arial' font-size='40' text-anchor='middle' fill='white'>BB</text></svg>">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkJ1ZGdldCBCdWRkeSIsCiAgInNob3J0X25hbWUiOiAiQnVkZ2V0IEJ1ZGR5IiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJ0aGVtZV9jb2xvciI6ICIjNDM2MWVlIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQXpOVEFnTlRBd0lqNDhjM1I1YkdVK0lEeHdZWFJvSUdacGJHdzlJblZ5YkNnalptbHNkR1Z5TVM0d0xqQXVNQ0F4TURBdU1UWWlQZzBLUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqQWdNQ0F6TlRBZ05UQXdJajQ4YzNSNWJHVTlJbVpoYkhObExXbHRZV2RsTFdSbGMyTnlhWEIwYVc5dUlqNDhMM04yWno0PSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -20,7 +25,7 @@
             --sidebar-bg: #1e293b;
             --card-bg: #ffffff;
             --sidebar-hover: rgba(67, 97, 238, 0.15);
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             --border-radius: 16px;
         }
@@ -29,63 +34,118 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f0f2f5 0%, #e6e9ef 100%);
+            background: #f0f2f5;
             color: var(--dark);
-            display: grid;
-            grid-template-columns: 280px 1fr;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-        
-        /* Sidebar Styles */
-        .sidebar {
-            background: var(--sidebar-bg);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            width: 280px;
             display: flex;
             flex-direction: column;
-            padding: 20px 0;
-            box-shadow: 2px 0 15px rgba(0,0,0,0.15);
+        }
+        
+        /* App Header */
+        .app-header {
+            background: var(--primary);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
             z-index: 100;
-            overflow-y: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .logo-container {
-            padding: 0 25px 25px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--primary);
-            border-radius: 14px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: bold;
         }
         
         .logo-text {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+        }
+        
+        .menu-toggle {
+            background: transparent;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 50px;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        /* Main Content */
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar {
+            background: var(--sidebar-bg);
+            color: white;
+            width: 280px;
+            height: calc(100vh - 72px);
+            position: fixed;
+            top: 72px;
+            left: -280px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            z-index: 90;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            left: 0;
         }
         
         .nav-section {
@@ -124,7 +184,6 @@
         .nav-link:hover {
             background: var(--sidebar-hover);
             color: white;
-            transform: translateX(5px);
         }
         
         .nav-link.active {
@@ -145,7 +204,6 @@
             padding: 20px;
             margin: 20px 15px 0;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
             border: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -167,35 +225,31 @@
             margin-top: 15px;
             width: 100%;
             font-size: 15px;
-            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
         }
         
         .premium-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255,255,255,0.3);
             background: #f8f9fa;
         }
         
-        /* Main Content Styles */
+        /* Main Content */
         .main-content {
-            grid-column: 2;
-            padding: 30px 40px;
+            flex: 1;
+            padding: 20px;
+            transition: var(--transition);
         }
         
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            padding-top: 10px;
+        .content-header {
+            margin-bottom: 25px;
         }
         
         .page-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--primary-dark);
             position: relative;
             display: inline-block;
+            margin-bottom: 5px;
         }
         
         .page-title::after {
@@ -209,83 +263,93 @@
             border-radius: 2px;
         }
         
-        .user-profile {
+        .page-subtitle {
+            color: var(--gray);
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .dashboard-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .highlight-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
             display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 50px;
+            flex-direction: column;
+            gap: 12px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid var(--primary);
         }
         
-        .user-profile:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .highlight-title {
+            color: var(--gray);
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .highlight-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .highlight-change {
+            font-size: 14px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        
-        .user-name {
-            font-weight: 600;
-        }
-        
-        .user-status {
-            font-size: 13px;
-            color: var(--success);
+            gap: 5px;
             font-weight: 500;
+        }
+        
+        .positive {
+            color: var(--success);
+        }
+        
+        .negative {
+            color: var(--danger);
         }
         
         .content-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
         
         .card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 28px;
+            padding: 25px;
             box-shadow: var(--shadow);
             transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.03);
             position: relative;
             overflow: hidden;
+            border-left: 4px solid var(--primary);
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .card-title {
@@ -316,9 +380,9 @@
         .card-action {
             background: rgba(67, 97, 238, 0.1);
             color: var(--primary);
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -329,148 +393,11 @@
         .card-action:hover {
             background: var(--primary);
             color: white;
-            transform: rotate(15deg);
         }
         
         .chart-container {
-            height: 250px;
-            margin-top: 20px;
-        }
-        
-        .dashboard-highlights {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-bottom: 35px;
-        }
-        
-        .highlight-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .highlight-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-        }
-        
-        .highlight-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-        }
-        
-        .highlight-title {
-            color: var(--gray);
-            font-size: 15px;
-            font-weight: 500;
-        }
-        
-        .highlight-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary-dark);
-        }
-        
-        .highlight-change {
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 500;
-        }
-        
-        .positive {
-            color: var(--success);
-        }
-        
-        .negative {
-            color: var(--danger);
-        }
-        
-        .menu-toggle {
-            display: none;
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            font-size: 20px;
-            cursor: pointer;
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 200;
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-            transition: var(--transition);
-        }
-        
-        .menu-toggle:hover {
-            transform: rotate(90deg);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .dashboard-highlights {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 992px) {
-            .content-container {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                transform: translateX(-100%);
-                transition: var(--transition);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                grid-column: 1;
-                padding: 90px 25px 30px;
-            }
-            
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .dashboard-highlights {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-                margin-bottom: 25px;
-            }
+            height: 200px;
+            margin-top: 15px;
         }
         
         /* Section Content */
@@ -499,7 +426,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px;
+            padding: 16px;
             background: white;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -535,7 +462,7 @@
         .transaction-amount {
             font-weight: 700;
             font-size: 18px;
-            min-width: 120px;
+            min-width: 100px;
             text-align: right;
         }
         
@@ -551,7 +478,7 @@
         .ai-chat-container {
             display: flex;
             flex-direction: column;
-            height: 500px;
+            height: 400px;
             background: #f8f9fa;
             border-radius: var(--border-radius);
             overflow: hidden;
@@ -560,16 +487,16 @@
         
         .chat-messages {
             flex: 1;
-            padding: 25px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
         
         .message {
-            max-width: 80%;
-            padding: 18px;
+            max-width: 85%;
+            padding: 15px;
             border-radius: 18px;
             position: relative;
             animation: fadeIn 0.4s ease;
@@ -597,14 +524,14 @@
         
         .chat-input {
             display: flex;
-            padding: 20px;
+            padding: 15px;
             background: white;
             border-top: 1px solid #eee;
         }
         
         .chat-input input {
             flex: 1;
-            padding: 15px 20px;
+            padding: 14px 18px;
             border: 1px solid #e0e0e0;
             border-radius: 50px;
             font-size: 16px;
@@ -621,54 +548,54 @@
             background: var(--primary);
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            margin-left: 15px;
+            margin-left: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             transition: var(--transition);
         }
         
         .send-btn:hover {
             background: var(--primary-dark);
-            transform: rotate(10deg);
         }
         
         /* Forecast Styles */
         .forecast-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
         
         .forecast-card {
             background: white;
             border-radius: var(--border-radius);
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: var(--transition);
+            border-left: 4px solid var(--primary);
         }
         
         .forecast-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
         
         .forecast-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .forecast-icon {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -687,7 +614,7 @@
         }
         
         .forecast-value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             margin: 10px 0 5px;
         }
@@ -698,6 +625,78 @@
         
         .expense-value {
             color: var(--danger);
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Mobile specific styles */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .dashboard-highlights {
+                gap: 15px;
+            }
+            
+            .content-container {
+                gap: 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .ai-chat-container {
+                height: 350px;
+            }
+            
+            .app-header {
+                padding: 12px 15px;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
+            .logo-text {
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 24px;
+            }
+            
+            .highlight-card, .card {
+                padding: 15px;
+            }
+            
+            .transaction-item {
+                padding: 12px;
+            }
+            
+            .forecast-card {
+                padding: 15px;
+            }
         }
         
         /* Animation for section switching */
@@ -716,423 +715,774 @@
             animation: slideIn 0.5s ease forwards;
         }
         
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Empty state styling */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
         }
         
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
+        .empty-state i {
+            font-size: 48px;
+            color: var(--gray);
+            margin-bottom: 20px;
         }
         
-        ::-webkit-scrollbar-thumb {
+        .empty-state h3 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: var(--gray);
+            max-width: 400px;
+        }
+        
+        /* Install prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transform: translateY(150%);
+            transition: transform 0.5s ease;
+        }
+        
+        .install-prompt.show {
+            transform: translateY(0);
+        }
+        
+        .install-icon {
+            width: 40px;
+            height: 40px;
             background: var(--primary);
-            border-radius: 4px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
+        .install-text {
+            flex: 1;
+        }
+        
+        .install-close {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            color: var(--gray);
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <!-- Mobile Menu Toggle -->
-    <button class="menu-toggle" id="menuToggle">
-        <i class="fas fa-bars"></i>
-    </button>
-    
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" id="sidebar">
+    <!-- App Header -->
+    <header class="app-header">
         <div class="logo-container">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <div class="logo-text">Budget Buddy</div>
-            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo-icon">BB</div>
+            <div class="logo-text">Budget Buddy</div>
         </div>
-        
-        <div class="nav-section">
-            <h3 class="section-title">Financial Overview</h3>
-            <div class="nav-links">
-                <div class="nav-link active" data-section="dashboard">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Dashboard</span>
-                </div>
-                <div class="nav-link" data-section="accounts">
-                    <i class="fas fa-wallet"></i>
-                    <span>Accounts</span>
-                </div>
-                <div class="nav-link" data-section="transactions">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>Transactions</span>
-                </div>
-                <div class="nav-link" data-section="goals">
-                    <i class="fas fa-bullseye"></i>
-                    <span>Goals & Budgets</span>
-                </div>
-            </div>
+        <div class="user-profile">
+            <div class="user-avatar">JS</div>
+            <span class="user-name">John</span>
         </div>
-        
-        <div class="nav-section">
-            <h3 class="section-title">AI Features</h3>
-            <div class="nav-links">
-                <div class="nav-link" data-section="chat">
-                    <i class="fas fa-comments"></i>
-                    <span>Chat with Buddy</span>
-                </div>
-                <div class="nav-link" data-section="forecast">
-                    <i class="fas fa-crystal-ball"></i>
-                    <span>Predictive Forecast</span>
-                </div>
-                <div class="nav-link" data-section="challenges">
-                    <i class="fas fa-gamepad"></i>
-                    <span>Savings Challenges</span>
-                </div>
-                <div class="nav-link" data-section="coaching">
-                    <i class="fas fa-user-graduate"></i>
-                    <span>Financial Coaching</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="nav-section">
-            <h3 class="section-title">Settings</h3>
-            <div class="nav-links">
-                <div class="nav-link" data-section="profile">
-                    <i class="fas fa-user"></i>
-                    <span>Profile</span>
-                </div>
-                <div class="nav-link" data-section="notifications">
-                    <i class="fas fa-bell"></i>
-                    <span>Notifications</span>
-                </div>
-                <div class="nav-link" data-section="security">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Security</span>
-                </div>
-                <div class="nav-link" data-section="support">
-                    <i class="fas fa-question-circle"></i>
-                    <span>Help & Support</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="premium-card">
-            <div class="premium-title">Unlock Premium Features</div>
-            <p>Advanced analytics, priority support, and more</p>
-            <button class="premium-btn">Upgrade Now</button>
-        </div>
-    </aside>
+    </header>
     
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="header">
-            <h1 class="page-title" id="pageTitle">Dashboard</h1>
-            <div class="user-profile">
-                <div class="user-avatar">JS</div>
-                <div>
-                    <div class="user-name">John Smith</div>
-                    <div class="user-status">Premium Member</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Dashboard Section -->
-        <div class="section-content active" id="dashboard">
-            <div class="dashboard-highlights">
-                <div class="highlight-card">
-                    <div class="highlight-title">Total Balance</div>
-                    <div class="highlight-value">$12,458.75</div>
-                    <div class="highlight-change positive">
-                        <i class="fas fa-arrow-up"></i> 5.2% from last month
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="nav-section">
+                <h3 class="section-title">Financial Overview</h3>
+                <div class="nav-links">
+                    <div class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span>
                     </div>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-title">Monthly Income</div>
-                    <div class="highlight-value">$4,250.00</div>
-                    <div class="highlight-change positive">
-                        <i class="fas fa-arrow-up"></i> 3.8% from last month
+                    <div class="nav-link" data-section="accounts">
+                        <i class="fas fa-wallet"></i>
+                        <span>Accounts</span>
                     </div>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-title">Monthly Expenses</div>
-                    <div class="highlight-value">$2,845.30</div>
-                    <div class="highlight-change negative">
-                        <i class="fas fa-arrow-down"></i> 2.1% from last month
+                    <div class="nav-link" data-section="transactions">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
                     </div>
-                </div>
-                <div class="highlight-card">
-                    <div class="highlight-title">Savings Rate</div>
-                    <div class="highlight-value">24.8%</div>
-                    <div class="highlight-change positive">
-                        <i class="fas fa-arrow-up"></i> 4.3% from last month
+                    <div class="nav-link" data-section="goals">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Goals & Budgets</span>
                     </div>
                 </div>
             </div>
             
-            <div class="content-container">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title"><i class="fas fa-chart-line"></i> Spending Overview</h2>
-                        <div class="card-actions">
-                            <div class="card-action">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </div>
-                        </div>
+            <div class="nav-section">
+                <h3 class="section-title">AI Features</h3>
+                <div class="nav-links">
+                    <div class="nav-link" data-section="chat">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat with Buddy</span>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="spendingChart"></canvas>
+                    <div class="nav-link" data-section="forecast">
+                        <i class="fas fa-crystal-ball"></i>
+                        <span>Predictive Forecast</span>
                     </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title"><i class="fas fa-percentage"></i> Budget Distribution</h2>
-                        <div class="card-actions">
-                            <div class="card-action">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </div>
-                        </div>
+                    <div class="nav-link" data-section="challenges">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Savings Challenges</span>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="budgetChart"></canvas>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title"><i class="fas fa-trophy"></i> Savings Challenge</h2>
-                        <div class="card-actions">
-                            <div class="card-action">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="challenge-card">
-                        <div class="challenge-title">Coffee Saver Challenge</div>
-                        <p>Save $50 this month by reducing coffee shop purchases</p>
-                        <div class="progress-container" style="margin: 20px 0;">
-                            <div class="progress-header">
-                                <span>Progress</span>
-                                <span>$32/$50</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress" style="width: 64%; height: 12px; background: var(--success); border-radius: 10px;"></div>
-                            </div>
-                        </div>
-                        <div class="challenge-reward">
-                            <i class="fas fa-gem"></i>
-                            <span>Reward: 50 Buddy Points + Financial Tips eBook</span>
-                        </div>
-                    </div>
-                    <button class="premium-btn" style="margin-top: 20px; background: var(--success); color: white;">
-                        <i class="fas fa-check-circle"></i> Complete Challenge
-                    </button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title"><i class="fas fa-lightbulb"></i> Financial Tips</h2>
-                        <div class="card-actions">
-                            <div class="card-action">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tip-list" style="margin-top: 15px;">
-                        <div class="tip-item" style="padding: 20px; border-bottom: 1px solid #eee; display: flex; gap: 20px; align-items: center;">
-                            <div style="width: 50px; height: 50px; background: rgba(67, 97, 238, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;">
-                                <i class="fas fa-coffee"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 17px;">Reduce coffee expenses</div>
-                                <div style="color: var(--gray); font-size: 15px; margin-top: 5px;">You've spent $85 on coffee this month</div>
-                            </div>
-                        </div>
-                        <div class="tip-item" style="padding: 20px; border-bottom: 1px solid #eee; display: flex; gap: 20px; align-items: center;">
-                            <div style="width: 50px; height: 50px; background: rgba(46, 204, 113, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--success); font-size: 20px;">
-                                <i class="fas fa-piggy-bank"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 17px;">Increase savings rate</div>
-                                <div style="color: var(--gray); font-size: 15px; margin-top: 5px;">You're saving 24% - aim for 30%</div>
-                            </div>
-                        </div>
-                        <div class="tip-item" style="padding: 20px; display: flex; gap: 20px; align-items: center;">
-                            <div style="width: 50px; height: 50px; background: rgba(247, 37, 133, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--danger); font-size: 20px;">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 17px;">Limit impulse shopping</div>
-                                <div style="color: var(--gray); font-size: 15px; margin-top: 5px;">You spent $245 on unplanned purchases</div>
-                            </div>
-                        </div>
+                    <div class="nav-link" data-section="coaching">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Financial Coaching</span>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Transactions Section -->
-        <div class="section-content" id="transactions">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-exchange-alt"></i> Transaction History</h2>
-                    <div class="card-actions">
-                        <div class="card-action">
-                            <i class="fas fa-filter"></i>
-                        </div>
-                        <div class="card-action">
-                            <i class="fas fa-plus"></i>
-                        </div>
+            
+            <div class="nav-section">
+                <h3 class="section-title">Settings</h3>
+                <div class="nav-links">
+                    <div class="nav-link" data-section="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
                     </div>
-                </div>
-                <div class="transaction-list">
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-description">Grocery Shopping</div>
-                            <div class="transaction-category">
-                                <i class="fas fa-utensils"></i> Food & Dining
-                            </div>
-                        </div>
-                        <div class="transaction-amount expense">-$85.30</div>
+                    <div class="nav-link" data-section="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
                     </div>
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-description">Monthly Salary</div>
-                            <div class="transaction-category">
-                                <i class="fas fa-money-check"></i> Income
-                            </div>
-                        </div>
-                        <div class="transaction-amount income">+$3,200.00</div>
+                    <div class="nav-link" data-section="security">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
                     </div>
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-description">Electricity Bill</div>
-                            <div class="transaction-category">
-                                <i class="fas fa-bolt"></i> Utilities
-                            </div>
-                        </div>
-                        <div class="transaction-amount expense">-$120.50</div>
-                    </div>
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-description">Restaurant Dinner</div>
-                            <div class="transaction-category">
-                                <i class="fas fa-utensils"></i> Food & Dining
-                            </div>
-                        </div>
-                        <div class="transaction-amount expense">-$67.80</div>
-                    </div>
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-description">Online Shopping</div>
-                            <div class="transaction-category">
-                                <i class="fas fa-shopping-bag"></i> Shopping
-                            </div>
-                        </div>
-                        <div class="transaction-amount expense">-$45.99</div>
+                    <div class="nav-link" data-section="support">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
                     </div>
                 </div>
             </div>
-        </div>
+            
+            <div class="premium-card">
+                <div class="premium-title">Unlock Premium Features</div>
+                <p>Advanced analytics, priority support, and more</p>
+                <button class="premium-btn">Upgrade Now</button>
+            </div>
+        </aside>
         
-        <!-- AI Chat Section -->
-        <div class="section-content" id="chat">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-comments"></i> Chat with Budget Buddy</h2>
-                    <div class="card-actions">
-                        <div class="card-action">
-                            <i class="fas fa-ellipsis-h"></i>
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Dashboard Section -->
+            <div class="section-content active" id="dashboard">
+                <div class="content-header">
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Your financial overview and insights</p>
+                </div>
+                
+                <div class="dashboard-highlights">
+                    <div class="highlight-card">
+                        <div class="highlight-title">Total Balance</div>
+                        <div class="highlight-value">$12,458.75</div>
+                        <div class="highlight-change positive">
+                            <i class="fas fa-arrow-up"></i> 5.2% from last month
+                        </div>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="highlight-title">Monthly Income</div>
+                        <div class="highlight-value">$4,250.00</div>
+                        <div class="highlight-change positive">
+                            <i class="fas fa-arrow-up"></i> 3.8% from last month
+                        </div>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="highlight-title">Monthly Expenses</div>
+                        <div class="highlight-value">$2,845.30</div>
+                        <div class="highlight-change negative">
+                            <i class="fas fa-arrow-down"></i> 2.1% from last month
+                        </div>
+                    </div>
+                    <div class="highlight-card">
+                        <div class="highlight-title">Savings Rate</div>
+                        <div class="highlight-value">24.8%</div>
+                        <div class="highlight-change positive">
+                            <i class="fas fa-arrow-up"></i> 4.3% from last month
                         </div>
                     </div>
                 </div>
-                <div class="ai-chat-container">
-                    <div class="chat-messages">
-                        <div class="message buddy-message">
-                            Hi John! I'm your Budget Buddy. How can I help with your finances today?
+                
+                <div class="content-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-chart-line"></i> Spending Overview</h2>
                         </div>
-                        <div class="message user-message">
-                            Can you give me some tips to save on groceries?
-                        </div>
-                        <div class="message buddy-message">
-                            Absolutely! Here are 3 ways to save on groceries:
-                            1. Plan meals for the week and make a shopping list
-                            2. Buy in bulk for non-perishable items
-                            3. Use cashback apps for grocery purchases
-                        </div>
-                        <div class="message user-message">
-                            That's helpful! What about dining out?
-                        </div>
-                        <div class="message buddy-message">
-                            For dining out:
-                            - Limit to once per week
-                            - Use coupons and loyalty programs
-                            - Choose lunch specials instead of dinner
-                            - Skip alcoholic beverages
+                        <div class="chart-container">
+                            <canvas id="spendingChart"></canvas>
                         </div>
                     </div>
-                    <div class="chat-input">
-                        <input type="text" placeholder="Ask Budget Buddy..." id="chatInput">
-                        <button class="send-btn" id="sendMessage">
-                            <i class="fas fa-paper-plane"></i>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-percentage"></i> Budget Distribution</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-trophy"></i> Savings Challenge</h2>
+                        </div>
+                        <div class="challenge-card">
+                            <div class="challenge-title">Coffee Saver Challenge</div>
+                            <p>Save $50 this month by reducing coffee shop purchases</p>
+                            <div class="progress-container" style="margin: 20px 0;">
+                                <div class="progress-header">
+                                    <span>Progress</span>
+                                    <span>$32/$50</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 64%; height: 12px; background: var(--success); border-radius: 10px;"></div>
+                                </div>
+                            </div>
+                            <div class="challenge-reward">
+                                <i class="fas fa-gem"></i>
+                                <span>Reward: 50 Buddy Points + Financial Tips eBook</span>
+                            </div>
+                        </div>
+                        <button class="premium-btn" style="margin-top: 20px; background: var(--success); color: white;">
+                            <i class="fas fa-check-circle"></i> Complete Challenge
                         </button>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Forecast Section -->
-        <div class="section-content" id="forecast">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-crystal-ball"></i> Financial Forecast</h2>
-                    <div class="card-actions">
-                        <div class="card-action">
-                            <i class="fas fa-ellipsis-h"></i>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-lightbulb"></i> Financial Tips</h2>
                         </div>
-                    </div>
-                </div>
-                <div class="chart-container" style="height: 400px;">
-                    <canvas id="forecastChart"></canvas>
-                </div>
-                <div class="forecast-container">
-                    <div class="forecast-card">
-                        <div class="forecast-header">
-                            <div class="forecast-icon income-icon">
-                                <i class="fas fa-arrow-up"></i>
+                        <div class="tip-list" style="margin-top: 15px;">
+                            <div class="tip-item" style="padding: 20px; border-bottom: 1px solid #eee; display: flex; gap: 20px; align-items: center;">
+                                <div style="width: 50px; height: 50px; background: rgba(67, 97, 238, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 20px;">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 17px;">Reduce coffee expenses</div>
+                                    <div style="color: var(--gray); font-size: 15px; margin-top: 5px;">You've spent $85 on coffee this month</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="highlight-title">Income Forecast</div>
-                                <div class="forecast-value income-value">$4,380</div>
-                                <div class="highlight-change positive">
-                                    <i class="fas fa-arrow-up"></i> 3.1% increase expected
+                            <div class="tip-item" style="padding: 20px; border-bottom: 1px solid #eee; display: flex; gap: 20px; align-items: center;">
+                                <div style="width: 50px; height: 50px; background: rgba(46, 204, 113, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--success); font-size: 20px;">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 17px;">Increase savings rate</div>
+                                    <div style="color: var(--gray); font-size: 15px; margin-top: 5px;">You're saving 24% - aim for 30%</div>
+                                </div>
+                            </div>
+                            <div class="tip-item" style="padding: 20px; display: flex; gap: 20px; align-items: center;">
+                                <div style="width: 50px; height: 50px; background: rgba(247, 37, 133, 0.1); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--danger); font-size: 20px;">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 17px;">Limit impulse shopping</div>
+                                    <div style="color: var(--gray); font-size: 15px; margin-top: 5px;">You spent $245 on unplanned purchases</div>
                                 </div>
                             </div>
                         </div>
-                        <p style="margin-top: 15px; line-height: 1.6;">Based on your current income trends and projected salary increases, we expect your monthly income to grow steadily over the next quarter.</p>
-                    </div>
-                    <div class="forecast-card">
-                        <div class="forecast-header">
-                            <div class="forecast-icon expense-icon">
-                                <i class="fas fa-arrow-down"></i>
-                            </div>
-                            <div>
-                                <div class="highlight-title">Expense Forecast</div>
-                                <div class="forecast-value expense-value">$2,920</div>
-                                <div class="highlight-change negative">
-                                    <i class="fas fa-arrow-up"></i> 2.6% increase expected
-                                </div>
-                            </div>
-                        </div>
-                        <p style="margin-top: 15px; line-height: 1.6;">Your expenses are projected to increase slightly due to seasonal factors. We recommend reviewing your discretionary spending to maintain your savings goals.</p>
                     </div>
                 </div>
             </div>
+            
+            <!-- Accounts Section -->
+            <div class="section-content" id="accounts">
+                <div class="content-header">
+                    <h1 class="page-title">Accounts</h1>
+                    <p class="page-subtitle">Manage your financial accounts</p>
+                </div>
+                
+                <div class="content-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-building"></i> Banking Accounts</h2>
+                            <div class="card-actions">
+                                <div class="card-action">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Chase Checking</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-money-check"></i> Checking Account
+                                    </div>
+                                </div>
+                                <div class="transaction-amount income">$5,342.75</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Bank of America Savings</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-piggy-bank"></i> Savings Account
+                                    </div>
+                                </div>
+                                <div class="transaction-amount income">$7,116.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-credit-card"></i> Credit Cards</h2>
+                            <div class="card-actions">
+                                <div class="card-action">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Chase Sapphire</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-credit-card"></i> Credit Card
+                                    </div>
+                                </div>
+                                <div class="transaction-amount expense">-$1,245.30</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">American Express</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-credit-card"></i> Credit Card
+                                    </div>
+                                </div>
+                                <div class="transaction-amount expense">-$845.75</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-chart-pie"></i> Net Worth</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="netWorthChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transactions Section -->
+            <div class="section-content" id="transactions">
+                <div class="content-header">
+                    <h1 class="page-title">Transactions</h1>
+                    <p class="page-subtitle">Your recent financial activity</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-exchange-alt"></i> Transaction History</h2>
+                        <div class="card-actions">
+                            <div class="card-action">
+                                <i class="fas fa-filter"></i>
+                            </div>
+                            <div class="card-action">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-description">Grocery Shopping</div>
+                                <div class="transaction-category">
+                                    <i class="fas fa-utensils"></i> Food & Dining
+                                </div>
+                            </div>
+                            <div class="transaction-amount expense">-$85.30</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-description">Monthly Salary</div>
+                                <div class="transaction-category">
+                                    <i class="fas fa-money-check"></i> Income
+                                </div>
+                            </div>
+                            <div class="transaction-amount income">+$3,200.00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-description">Electricity Bill</div>
+                                <div class="transaction-category">
+                                    <i class="fas fa-bolt"></i> Utilities
+                                </div>
+                            </div>
+                            <div class="transaction-amount expense">-$120.50</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-description">Restaurant Dinner</div>
+                                <div class="transaction-category">
+                                    <i class="fas fa-utensils"></i> Food & Dining
+                                </div>
+                            </div>
+                            <div class="transaction-amount expense">-$67.80</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-description">Online Shopping</div>
+                                <div class="transaction-category">
+                                    <i class="fas fa-shopping-bag"></i> Shopping
+                                </div>
+                            </div>
+                            <div class="transaction-amount expense">-$45.99</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Goals Section -->
+            <div class="section-content" id="goals">
+                <div class="content-header">
+                    <h1 class="page-title">Goals & Budgets</h1>
+                    <p class="page-subtitle">Track your financial objectives</p>
+                </div>
+                
+                <div class="content-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-bullseye"></i> Financial Goals</h2>
+                            <div class="card-actions">
+                                <div class="card-action">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Emergency Fund</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-shield-alt"></i> Savings Goal
+                                    </div>
+                                </div>
+                                <div class="transaction-amount income">$2,500/$5,000</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Vacation to Hawaii</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-umbrella-beach"></i> Travel Goal
+                                    </div>
+                                </div>
+                                <div class="transaction-amount income">$1,200/$3,000</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">New Laptop</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-laptop"></i> Tech Goal
+                                    </div>
+                                </div>
+                                <div class="transaction-amount income">$450/$1,200</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-chart-pie"></i> Budget Allocation</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="budgetAllocationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Chat Section -->
+            <div class="section-content" id="chat">
+                <div class="content-header">
+                    <h1 class="page-title">Chat with Buddy</h1>
+                    <p class="page-subtitle">Your AI financial assistant</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-comments"></i> Financial Assistant</h2>
+                    </div>
+                    <div class="ai-chat-container">
+                        <div class="chat-messages">
+                            <div class="message buddy-message">
+                                Hi John! I'm your Budget Buddy. How can I help with your finances today?
+                            </div>
+                            <div class="message user-message">
+                                Can you give me some tips to save on groceries?
+                            </div>
+                            <div class="message buddy-message">
+                                Absolutely! Here are 3 ways to save on groceries:
+                                1. Plan meals for the week and make a shopping list
+                                2. Buy in bulk for non-perishable items
+                                3. Use cashback apps for grocery purchases
+                            </div>
+                            <div class="message user-message">
+                                That's helpful! What about dining out?
+                            </div>
+                            <div class="message buddy-message">
+                                For dining out:
+                                - Limit to once per week
+                                - Use coupons and loyalty programs
+                                - Choose lunch specials instead of dinner
+                                - Skip alcoholic beverages
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" placeholder="Ask Budget Buddy..." id="chatInput">
+                            <button class="send-btn" id="sendMessage">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Forecast Section -->
+            <div class="section-content" id="forecast">
+                <div class="content-header">
+                    <h1 class="page-title">Financial Forecast</h1>
+                    <p class="page-subtitle">Predictive insights for your finances</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-crystal-ball"></i> Predictive Forecast</h2>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                    <div class="forecast-container">
+                        <div class="forecast-card">
+                            <div class="forecast-header">
+                                <div class="forecast-icon income-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div>
+                                    <div class="highlight-title">Income Forecast</div>
+                                    <div class="forecast-value income-value">$4,380</div>
+                                    <div class="highlight-change positive">
+                                        <i class="fas fa-arrow-up"></i> 3.1% increase expected
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin-top: 15px; line-height: 1.6;">Based on your current income trends and projected salary increases, we expect your monthly income to grow steadily over the next quarter.</p>
+                        </div>
+                        <div class="forecast-card">
+                            <div class="forecast-header">
+                                <div class="forecast-icon expense-icon">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div>
+                                    <div class="highlight-title">Expense Forecast</div>
+                                    <div class="forecast-value expense-value">$2,920</div>
+                                    <div class="highlight-change negative">
+                                        <i class="fas fa-arrow-up"></i> 2.6% increase expected
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="margin-top: 15px; line-height: 1.6;">Your expenses are projected to increase slightly due to seasonal factors. We recommend reviewing your discretionary spending to maintain your savings goals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Financial Coaching Section -->
+            <div class="section-content" id="coaching">
+                <div class="content-header">
+                    <h1 class="page-title">Financial Coaching</h1>
+                    <p class="page-subtitle">Personalized financial education</p>
+                </div>
+                
+                <div class="content-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-graduation-cap"></i> Learning Path</h2>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Budgeting Basics</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-check-circle" style="color: var(--success);"></i> Completed
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">
+                                    <i class="fas fa-play-circle" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Debt Management</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-spinner" style="color: var(--warning);"></i> In Progress
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">
+                                    <i class="fas fa-play-circle" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Investment Fundamentals</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-lock" style="color: var(--gray);"></i> Locked
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">
+                                    <i class="fas fa-lock" style="color: var(--gray);"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-book"></i> Recommended Resources</h2>
+                        </div>
+                        <div class="transaction-list">
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">The Psychology of Spending</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-book"></i> Article
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">
+                                    <i class="fas fa-external-link-alt" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Building an Emergency Fund</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-video"></i> Video
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">
+                                    <i class="fas fa-external-link-alt" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <div class="transaction-description">Understanding Credit Scores</div>
+                                    <div class="transaction-category">
+                                        <i class="fas fa-file-alt"></i> Guide
+                                    </div>
+                                </div>
+                                <div class="transaction-amount">
+                                    <i class="fas fa-external-link-alt" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Section -->
+            <div class="section-content" id="profile">
+                <div class="content-header">
+                    <h1 class="page-title">Your Profile</h1>
+                    <p class="page-subtitle">Manage your account settings</p>
+                </div>
+                
+                <div class="content-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-user"></i> Personal Information</h2>
+                        </div>
+                        <div style="padding: 20px;">
+                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+                                <div class="user-avatar" style="width: 80px; height: 80px; font-size: 32px;">JS</div>
+                                <div>
+                                    <h3 style="font-size: 24px; margin-bottom: 5px;">John Smith</h3>
+                                    <p style="color: var(--gray);">Premium Member</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                                <div>
+                                    <label style="display: block; color: var(--gray); margin-bottom: 8px;">Full Name</label>
+                                    <div style="padding: 12px; background: #f8f9fa; border-radius: 12px;">John Smith</div>
+                                </div>
+                                <div>
+                                    <label style="display: block; color: var(--gray); margin-bottom: 8px;">Email</label>
+                                    <div style="padding: 12px; background: #f8f9fa; border-radius: 12px;">john@example.com</div>
+                                </div>
+                                <div>
+                                    <label style="display: block; color: var(--gray); margin-bottom: 8px;">Phone</label>
+                                    <div style="padding: 12px; background: #f8f9fa; border-radius: 12px;">(555) 123-4567</div>
+                                </div>
+                                <div>
+                                    <label style="display: block; color: var(--gray); margin-bottom: 8px;">Member Since</label>
+                                    <div style="padding: 12px; background: #f8f9fa; border-radius: 12px;">Jan 15, 2023</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><i class="fas fa-shield-alt"></i> Security</h2>
+                        </div>
+                        <div style="padding: 20px;">
+                            <div style="margin-bottom: 25px;">
+                                <h3 style="font-size: 18px; margin-bottom: 15px;">Password</h3>
+                                <button class="premium-btn" style="width: 100%; background: var(--primary); color: white;">
+                                    Change Password
+                                </button>
+                            </div>
+                            
+                            <div>
+                                <h3 style="font-size: 18px; margin-bottom: 15px;">Two-Factor Authentication</h3>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Currently disabled</span>
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        <div class="install-icon">
+            <i class="fas fa-download"></i>
         </div>
-    </main>
+        <div class="install-text">
+            <strong>Install Budget Buddy</strong>
+            <p>Add to home screen for quick access</p>
+        </div>
+        <button class="install-close" id="closePrompt">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
 
     <script>
         // Initialize charts
@@ -1277,15 +1627,52 @@
                     }
                 }
             });
+            
+            // Net Worth Chart
+            const netWorthCtx = document.getElementById('netWorthChart').getContext('2d');
+            new Chart(netWorthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [{
+                        label: 'Net Worth',
+                        data: [8500, 9200, 10200, 12458],
+                        borderColor: '#3a0ca3',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: true,
+                        backgroundColor: 'rgba(58, 12, 163, 0.1)',
+                        pointRadius: 6,
+                        pointBackgroundColor: '#3a0ca3'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
         }
         
         // Navigation functionality
         function setupNavigation() {
             const navLinks = document.querySelectorAll('.nav-link');
             const sectionContents = document.querySelectorAll('.section-content');
-            const pageTitle = document.getElementById('pageTitle');
             const menuToggle = document.getElementById('menuToggle');
             const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
             
             // Set active section
             navLinks.forEach(link => {
@@ -1301,9 +1688,6 @@
                     const sectionId = this.getAttribute('data-section');
                     document.getElementById(sectionId).classList.add('active');
                     
-                    // Update page title
-                    pageTitle.textContent = this.querySelector('span').textContent;
-                    
                     // Close sidebar on mobile after selection
                     if (window.innerWidth <= 768) {
                         sidebar.classList.remove('active');
@@ -1314,6 +1698,13 @@
             // Toggle sidebar on mobile
             menuToggle.addEventListener('click', function() {
                 sidebar.classList.toggle('active');
+            });
+            
+            // Close sidebar when clicking on main content
+            mainContent.addEventListener('click', function() {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
             });
         }
         
@@ -1367,11 +1758,35 @@
             }
         }
         
+        // PWA Installation Prompt
+        function setupPWA() {
+            const installPrompt = document.getElementById('installPrompt');
+            const closePrompt = document.getElementById('closePrompt');
+            
+            let deferredPrompt;
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                // Stash the event so it can be triggered later
+                deferredPrompt = e;
+                // Show the install prompt
+                setTimeout(() => {
+                    installPrompt.classList.add('show');
+                }, 5000);
+            });
+            
+            closePrompt.addEventListener('click', () => {
+                installPrompt.classList.remove('show');
+            });
+        }
+        
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             initCharts();
             setupNavigation();
             setupChat();
+            setupPWA();
         });
     </script>
 </body>
