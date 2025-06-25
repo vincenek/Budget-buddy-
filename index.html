@@ -3,251 +3,855 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Buddy 🦉</title>
+    <title>Budget Buddy | AI-Powered Financial Coach</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #2F80ED;
-            --income: #27AE60;
-            --expense: #EB5757;
-            --bg: #F8F9FA;
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #ffbe0b;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --sidebar-bg: linear-gradient(180deg, #3a0ca3 0%, #4361ee 100%);
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
-
+        
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background: var(--bg);
-            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
             padding: 20px;
         }
-
-        .container {
-            max-width: 600px;
+        
+        .app-container {
+            max-width: 1400px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 25px;
         }
-
-        .buddy-header {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .buddy-header h1 {
-            color: var(--primary);
-            font-size: 2.5em;
-            margin: 0;
-        }
-
-        #buddyFeedback {
-            font-size: 1.2em;
-            margin: 10px 0;
-            min-height: 24px;
-        }
-
-        .balance-box {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin: 20px 0;
-        }
-
-        #stressFreeToggle {
-            width: 100%;
-            margin-bottom: 10px;
-            background: #4CAF50;
-        }
-
-        #transactionForm {
+        
+        /* Header Styles */
+        .app-header {
+            grid-column: 1 / -1;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--sidebar-bg);
+            border-radius: 20px;
+            padding: 30px 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
             gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
         }
-
-        input, select, button {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            flex: 1;
-            min-width: 120px;
+        
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-left: 10px;
         }
-
-        button {
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .buddy-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .buddy-avatar {
+            width: 120px;
+            height: 120px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+            flex-shrink: 0;
+        }
+        
+        .buddy-content {
+            flex-grow: 1;
+        }
+        
+        .buddy-message {
+            background: #eef2ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            line-height: 1.5;
+            position: relative;
+        }
+        
+        .buddy-message:after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 10px 10px 10px 0;
+            border-style: solid;
+            border-color: transparent #eef2ff transparent transparent;
+        }
+        
+        .voice-controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        #voice-btn {
             background: var(--primary);
             color: white;
             border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
         }
-
-        .transaction-list {
-            background: white;
+        
+        #voice-btn:hover {
+            background: var(--secondary);
+        }
+        
+        #voice-btn.listening {
+            background: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(247, 37, 133, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(247, 37, 133, 0); }
+        }
+        
+        /* Dashboard Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .personality-profile {
+            background: linear-gradient(135deg, #4cc9f0 0%, #3a0ca3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        
+        .profile-type {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .profile-desc {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .profile-tip {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            font-style: italic;
+        }
+        
+        .forecast-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .forecast-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #e0e0e0;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
-
+        
+        .progress {
+            height: 100%;
+            background: var(--success);
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .challenge-card {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: linear-gradient(135deg, #ffbe0b 0%, #fb5607 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+        
+        .challenge-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .challenge-reward {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .transaction-form {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .transaction-form input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+        
+        #add-transaction {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        #add-transaction:hover {
+            background: #3aa9d0;
+        }
+        
+        .transactions {
+            grid-column: 1 / -1;
+            margin-top: 10px;
+        }
+        
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
         .transaction-item {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
             align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
         }
-
-        .income { color: var(--income); }
-        .expense { color: var(--expense); }
-
-        #chartContainer {
-            margin-top: 20px;
+        
+        .transaction-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
-
-        .stress-free .transaction-item span:last-child,
-        .stress-free #balance {
-            display: none;
+        
+        .transaction-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .transaction-category {
+            font-size: 14px;
+            color: #777;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .expense {
+            color: var(--danger);
+        }
+        
+        .income {
+            color: var(--success);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .buddy-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .buddy-message:after {
+                left: 50%;
+                top: -10px;
+                transform: translateX(-50%) rotate(90deg);
+            }
+            
+            .transaction-form {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Stress-Free Toggle -->
-        <button id="stressFreeToggle" onclick="toggleStressFree()">🌿 Stress-Free Mode</button>
-
-        <!-- Header -->
-        <div class="buddy-header">
-            <h1>Budget Buddy 🦉</h1>
-            <div id="buddyFeedback">🦉 "Let's get started!"</div>
-        </div>
-
-        <!-- Balance -->
-        <div class="balance-box">
-            <h3>Current Balance</h3>
-            <p id="balance">$0.00</p>
-        </div>
-
-        <!-- Add Transaction Form -->
-        <form id="transactionForm">
-            <input type="text" id="description" placeholder="Description" required>
-            <input type="number" id="amount" placeholder="Amount" step="0.01" required>
-            <select id="type">
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-            </select>
-            <button type="submit">Add</button>
-        </form>
-
-        <!-- Transactions List -->
-        <div class="transaction-list">
-            <h3>Transactions</h3>
-            <div id="transactions"></div>
-        </div>
-
-        <!-- Chart -->
-        <div id="chartContainer">
-            <canvas id="budgetChart"></canvas>
-        </div>
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h1>Budget Buddy</h1>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar">JS</div>
+                <div>
+                    <div class="user-name">John Smith</div>
+                    <div class="user-status">Premium Member</div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title"><i class="fas fa-home"></i> Dashboard</h3>
+                <div class="nav-links">
+                    <div class="nav-link active">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Financial Overview</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <span>Accounts</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Goals & Budgets</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title"><i class="fas fa-robot"></i> AI Features</h3>
+                <div class="nav-links">
+                    <div class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat with Buddy</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-crystal-ball"></i>
+                        <span>Predictive Forecast</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Savings Challenges</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Financial Coaching</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title"><i class="fas fa-cog"></i> Settings</h3>
+                <div class="nav-links">
+                    <div class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Security</span>
+                    </div>
+                    <div class="nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="nav-links">
+                    <div class="nav-link">
+                        <i class="fas fa-rocket"></i>
+                        <span>Upgrade to Premium</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- AI Assistant Section -->
+            <section class="buddy-container">
+                <div class="buddy-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="buddy-content">
+                    <div class="buddy-message">
+                        Hi John! I'm your Budget Buddy. I see you've spent $245 on dining this month. Would you like me to suggest ways to save 20% on food expenses?
+                    </div>
+                    <div class="voice-controls">
+                        <button id="voice-btn">
+                            <i class="fas fa-microphone"></i>
+                            Speak to Buddy
+                        </button>
+                        <button id="suggest-btn" class="suggest-btn">
+                            <i class="fas fa-lightbulb"></i>
+                            Get Savings Suggestions
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Financial Personality Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-user-tag"></i> Financial Personality</h2>
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="personality-profile">
+                    <div class="profile-type" id="profile-type">Impulsive Spender</div>
+                    <div class="profile-desc">
+                        You enjoy spontaneous purchases but sometimes exceed your budget. Your main opportunities are dining out and entertainment.
+                    </div>
+                    <div class="profile-tip">
+                        <i class="fas fa-lightbulb"></i> Tip: Try setting a weekly "fun money" limit to balance enjoyment and savings.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Forecast Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-chart-line"></i> Next Month Forecast</h2>
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="forecast-value" id="forecast-amount">$3,245</div>
+                <div class="forecast-trend">
+                    <i class="fas fa-arrow-down"></i> 8.5% less than this month
+                </div>
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span>Forecast Accuracy</span>
+                        <span>87%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 87%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Savings Challenge Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-trophy"></i> Savings Challenge</h2>
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-title">Coffee Saver Challenge</div>
+                    <p>Save $50 this month by reducing coffee shop purchases</p>
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>Progress</span>
+                            <span>$32/$50</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 64%"></div>
+                        </div>
+                    </div>
+                    <div class="challenge-reward">
+                        <i class="fas fa-gem"></i>
+                        <span>Reward: 50 Buddy Points + Financial Tips eBook</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add Transaction Section -->
+            <section class="transactions card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add Transaction</h2>
+                </div>
+                <div class="transaction-form">
+                    <input type="text" id="transaction-desc" placeholder="What was this for?">
+                    <input type="number" id="transaction-amt" placeholder="$ Amount">
+                    <select id="transaction-type">
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                    <select id="transaction-category">
+                        <option value="food">Food & Dining</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="transport">Transportation</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="utilities">Utilities</option>
+                        <option value="salary">Salary</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button id="add-transaction">Add Transaction</button>
+                </div>
+                
+                <div class="card-header" style="margin-top: 30px;">
+                    <h2 class="card-title"><i class="fas fa-list"></i> Recent Transactions</h2>
+                    <i class="fas fa-filter"></i>
+                </div>
+                <div class="transaction-list" id="transaction-list">
+                    <!-- Transactions will be added here dynamically -->
+                </div>
+            </section>
+        </main>
     </div>
 
     <script>
-        let transactions = JSON.parse(localStorage.getItem('budgetBuddy')) || [];
-        let questsCompleted = new Set();
-
-        // Initialize Chart
-        const ctx = document.getElementById('budgetChart').getContext('2d');
-        let chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Income', 'Expenses'],
-                datasets: [{
-                    data: [0, 0],
-                    backgroundColor: ['#27AE60', '#EB5757']
-                }]
-            }
-        });
-
-        // Update UI
-        function updateUI() {
-            localStorage.setItem('budgetBuddy', JSON.stringify(transactions));
+        // Sample transaction data
+        const sampleTransactions = [
+            { id: 1, description: "Grocery Shopping", amount: -85.30, category: "food", date: "2023-06-10" },
+            { id: 2, description: "Monthly Salary", amount: 3200.00, category: "salary", date: "2023-06-05" },
+            { id: 3, description: "Electricity Bill", amount: -120.50, category: "utilities", date: "2023-06-03" },
+            { id: 4, description: "Restaurant Dinner", amount: -67.80, category: "food", date: "2023-06-02" },
+            { id: 5, description: "Online Shopping", amount: -45.99, category: "shopping", date: "2023-06-01" },
+            { id: 6, description: "Gas Refill", amount: -55.00, category: "transport", date: "2023-05-29" },
+            { id: 7, description: "Freelance Work", amount: 850.00, category: "income", date: "2023-05-28" }
+        ];
+        
+        // Financial Personality Detection
+        const detectFinancialPersonality = (transactions) => {
+            const impulseCount = transactions.filter(t => 
+                t.amount < -50 && ['food', 'shopping', 'entertainment'].includes(t.category)
+            ).length;
             
-            // Calculate balance
-            const balance = transactions.reduce((acc, t) => 
-                t.type === 'income' ? acc + t.amount : acc - t.amount, 0);
-            document.getElementById('balance').textContent = `$${balance.toFixed(2)}`;
-
-            // Update transactions list
-            const transactionsDiv = document.getElementById('transactions');
-            transactionsDiv.innerHTML = transactions.map((t, index) => `
-                <div class="transaction-item">
-                    <span>${t.description}</span>
-                    <span class="${t.type}">${t.type === 'income' ? '+' : '-'}$${t.amount.toFixed(2)}</span>
-                    <button onclick="deleteTransaction(${index})">🗑️</button>
-                </div>
-            `).join('');
-
-            // Update chart
-            const income = transactions.filter(t => t.type === 'income').reduce((acc, t) => acc + t.amount, 0);
-            const expenses = transactions.filter(t => t.type === 'expense').reduce((acc, t) => acc + t.amount, 0);
-            chart.data.datasets[0].data = [income, expenses];
-            chart.update();
-
-            // Buddy feedback
-            const feedbackEl = document.getElementById('buddyFeedback');
-            if (transactions.length === 0) {
-                feedbackEl.textContent = '🦉 "Ready to begin?"';
-            } else if (balance < 0) {
-                feedbackEl.textContent = '🦉❌ "Let\'s adjust expenses!"';
+            const savingsCount = transactions.filter(t => 
+                t.amount > 0
+            ).length;
+            
+            if (impulseCount > 3) return "Impulsive Spender";
+            if (savingsCount > 5) return "Savings Expert";
+            return "Balanced Planner";
+        };
+        
+        // Predictive Forecasting
+        const predictNextMonth = (transactions) => {
+            const expenses = transactions.filter(t => t.amount < 0);
+            const income = transactions.filter(t => t.amount > 0);
+            
+            if (expenses.length === 0 || income.length === 0) return 0;
+            
+            const avgExpense = expenses.reduce((sum, t) => sum + t.amount, 0) / expenses.length;
+            const avgIncome = income.reduce((sum, t) => sum + t.amount, 0) / income.length;
+            
+            // Simple prediction: 5% improvement from average
+            return (avgIncome + (avgExpense * 0.95)).toFixed(2);
+        };
+        
+        // Format currency
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(Math.abs(amount));
+        };
+        
+        // Render transactions
+        const renderTransactions = () => {
+            const container = document.getElementById('transaction-list');
+            container.innerHTML = '';
+            
+            sampleTransactions.forEach(transaction => {
+                const transactionEl = document.createElement('div');
+                transactionEl.className = 'transaction-item';
+                
+                const isExpense = transaction.amount < 0;
+                const amountClass = isExpense ? 'expense' : 'income';
+                const sign = isExpense ? '-' : '+';
+                const icon = isExpense ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+                
+                const categoryIcons = {
+                    'food': 'fas fa-utensils',
+                    'shopping': 'fas fa-shopping-bag',
+                    'transport': 'fas fa-car',
+                    'entertainment': 'fas fa-film',
+                    'utilities': 'fas fa-bolt',
+                    'salary': 'fas fa-money-check',
+                    'income': 'fas fa-money-bill-wave',
+                    'other': 'fas fa-question-circle'
+                };
+                
+                transactionEl.innerHTML = `
+                    <div class="transaction-info">
+                        <div class="transaction-description">${transaction.description}</div>
+                        <div class="transaction-category">
+                            <i class="${categoryIcons[transaction.category] || categoryIcons['other']}"></i>
+                            ${transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}
+                        </div>
+                    </div>
+                    <div class="transaction-amount ${amountClass}">
+                        ${sign} ${formatCurrency(transaction.amount)}
+                    </div>
+                `;
+                
+                container.appendChild(transactionEl);
+            });
+        };
+        
+        // Voice Assistant
+        document.getElementById('voice-btn').addEventListener('click', () => {
+            const voiceBtn = document.getElementById('voice-btn');
+            const buddyMessage = document.querySelector('.buddy-message');
+            
+            // Toggle listening state
+            voiceBtn.classList.toggle('listening');
+            
+            if (voiceBtn.classList.contains('listening')) {
+                voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i> Stop Listening';
+                buddyMessage.textContent = "I'm listening... How can I help with your budget today?";
             } else {
-                feedbackEl.textContent = '🦉✅ "Looking good!"';
-            }
-
-            // Check quests
-            checkQuests();
-        }
-
-        // Quests system
-        function checkQuests() {
-            if (transactions.length >= 1 && !questsCompleted.has('firstTransaction')) {
-                alert('🎉 First step! Unlocked "Newbie Saver" badge!');
-                questsCompleted.add('firstTransaction');
-            }
-            if (transactions.length >= 5 && !questsCompleted.has('fiveTransactions')) {
-                alert('🏆 Unlocked "Consistent Tracker" badge!');
-                questsCompleted.add('fiveTransactions');
-            }
-        }
-
-        // Stress-free mode
-        function toggleStressFree() {
-            document.body.classList.toggle('stress-free');
-            const btn = document.getElementById('stressFreeToggle');
-            btn.textContent = document.body.classList.contains('stress-free') 
-                ? '🌿 Numbers Mode' 
-                : '🌿 Stress-Free Mode';
-        }
-
-        // Event listeners
-        document.getElementById('transactionForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const description = document.getElementById('description').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const type = document.getElementById('type').value;
-
-            if (description && amount) {
-                transactions.push({ description, amount, type });
-                updateUI();
-                e.target.reset();
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i> Speak to Buddy';
+                
+                // Simulate voice command response
+                const commands = [
+                    "You said: 'What did I spend on dining this month?' You've spent $245 on dining so far.",
+                    "You said: 'Show me my savings progress.' You've saved $320 towards your $500 goal this month.",
+                    "You said: 'Create a new budget for groceries.' I've set a $400 monthly budget for groceries."
+                ];
+                
+                buddyMessage.textContent = commands[Math.floor(Math.random() * commands.length)];
             }
         });
-
-        window.deleteTransaction = (index) => {
-            transactions.splice(index, 1);
-            updateUI();
-        };
-
-        // Initial load
-        updateUI();
+        
+        // Add Transaction
+        document.getElementById('add-transaction').addEventListener('click', () => {
+            const desc = document.getElementById('transaction-desc').value;
+            const amount = parseFloat(document.getElementById('transaction-amt').value);
+            const type = document.getElementById('transaction-type').value;
+            const category = document.getElementById('transaction-category').value;
+            
+            if (!desc || isNaN(amount)) {
+                alert('Please enter a valid description and amount');
+                return;
+            }
+            
+            const transaction = {
+                id: sampleTransactions.length + 1,
+                description: desc,
+                amount: type === 'expense' ? -amount : amount,
+                category: category,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            sampleTransactions.unshift(transaction);
+            renderTransactions();
+            
+            // Reset form
+            document.getElementById('transaction-desc').value = '';
+            document.getElementById('transaction-amt').value = '';
+            
+            // Update UI
+            document.getElementById('profile-type').textContent = detectFinancialPersonality(sampleTransactions);
+            document.getElementById('forecast-amount').textContent = formatCurrency(predictNextMonth(sampleTransactions));
+            
+            // Show confirmation
+            const buddyMessage = document.querySelector('.buddy-message');
+            buddyMessage.textContent = `Got it! I've added your ${type} of ${formatCurrency(amount)} for ${desc}.`;
+        });
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTransactions();
+            document.getElementById('profile-type').textContent = detectFinancialPersonality(sampleTransactions);
+            document.getElementById('forecast-amount').textContent = formatCurrency(predictNextMonth(sampleTransactions));
+        });
     </script>
 </body>
 </html>
