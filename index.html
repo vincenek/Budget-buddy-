@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Buddy | AI-Powered Financial Coach</title>
+    <title>Budget Buddy - AI Financial Assistant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -17,8 +17,8 @@
             --light: #f8f9fa;
             --dark: #212529;
             --gray: #6c757d;
+            --sidebar-bg: #1e293b;
             --card-bg: rgba(255, 255, 255, 0.95);
-            --sidebar-bg: linear-gradient(180deg, #3a0ca3 0%, #4361ee 100%);
             --shadow: 0 10px 30px rgba(0,0,0,0.08);
             --transition: all 0.3s ease;
         }
@@ -31,28 +31,31 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            background: #f0f2f5;
             color: var(--dark);
-            padding: 20px;
-        }
-        
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 25px;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        /* Header Styles */
-        .app-header {
-            grid-column: 1 / -1;
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--sidebar-bg);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            width: 280px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
             padding: 20px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        
+        .logo-container {
+            padding: 0 25px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 20px;
         }
         
@@ -63,24 +66,115 @@
         }
         
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background: var(--primary);
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 24px;
-            box-shadow: var(--shadow);
+            font-size: 20px;
         }
         
-        .logo h1 {
-            font-size: 28px;
+        .logo-text {
+            font-size: 22px;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-section {
+            margin-bottom: 25px;
+            padding: 0 15px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #cbd5e1;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(67, 97, 238, 0.2);
+            color: white;
+        }
+        
+        .nav-link i {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .premium-card {
+            background: linear-gradient(135deg, #ffbe0b 0%, #fb5607 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 15px 0;
+            text-align: center;
+        }
+        
+        .premium-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .premium-btn {
+            background: white;
+            color: var(--dark);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .premium-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            grid-column: 2;
+            padding: 20px 30px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-dark);
         }
         
         .user-profile {
@@ -88,7 +182,6 @@
             align-items: center;
             gap: 15px;
             cursor: pointer;
-            position: relative;
         }
         
         .user-avatar {
@@ -102,188 +195,16 @@
             color: white;
             font-weight: bold;
             font-size: 18px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
         }
         
-        .user-avatar:hover {
-            transform: scale(1.05);
-        }
-        
-        /* Sidebar Styles */
-        .sidebar {
-            background: var(--sidebar-bg);
-            border-radius: 20px;
-            padding: 30px 20px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            box-shadow: var(--shadow);
-        }
-        
-        .sidebar-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .sidebar-title {
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .nav-links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding-left: 10px;
-        }
-        
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 15px;
-            border-radius: 12px;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        
-        .nav-link i {
-            width: 24px;
-            text-align: center;
-            font-size: 18px;
-        }
-        
-        /* Main Content Styles */
-        .main-content {
+        .content-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-auto-rows: minmax(200px, auto);
             gap: 25px;
         }
         
-        .buddy-container {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            grid-column: 1 / -1;
-            display: flex;
-            gap: 25px;
-            align-items: center;
-            transition: var(--transition);
-        }
-        
-        .buddy-avatar {
-            width: 120px;
-            height: 120px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 60px;
-            flex-shrink: 0;
-            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.5); }
-            70% { box-shadow: 0 0 0 15px rgba(67, 97, 238, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0); }
-        }
-        
-        .buddy-content {
-            flex-grow: 1;
-        }
-        
-        .buddy-message {
-            background: #eef2ff;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            font-size: 18px;
-            line-height: 1.5;
-            position: relative;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .buddy-message:after {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 10px 10px 10px 0;
-            border-style: solid;
-            border-color: transparent #eef2ff transparent transparent;
-        }
-        
-        .voice-controls {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .action-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-        }
-        
-        .action-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .action-btn.secondary {
-            background: var(--secondary);
-        }
-        
-        .action-btn.warning {
-            background: var(--warning);
-            color: var(--dark);
-        }
-        
-        .action-btn.success {
-            background: var(--success);
-        }
-        
-        .action-btn.danger {
-            background: var(--danger);
-        }
-        
-        #voice-btn.listening {
-            background: var(--danger);
-            animation: pulse 1.5s infinite;
-        }
-        
-        /* Dashboard Cards */
         .card {
-            background: var(--card-bg);
+            background: white;
             border-radius: 20px;
             padding: 25px;
             box-shadow: var(--shadow);
@@ -303,7 +224,7 @@
         }
         
         .card-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--primary);
             display: flex;
@@ -334,140 +255,129 @@
             color: white;
         }
         
-        .personality-profile {
-            background: linear-gradient(135deg, #4cc9f0 0%, #3a0ca3 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            margin-top: 10px;
-        }
-        
-        .profile-type {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-        
-        .profile-desc {
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .profile-tip {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 15px;
-            font-style: italic;
-        }
-        
-        .forecast-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 10px 0;
-        }
-        
-        .forecast-trend {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--success);
-            font-weight: 600;
-        }
-        
-        .progress-container {
-            margin: 20px 0;
-        }
-        
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        
-        .progress-bar {
-            height: 12px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress {
-            height: 100%;
-            background: var(--success);
-            border-radius: 10px;
-            transition: width 0.5s ease-in-out;
-        }
-        
-        .challenge-card {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background: linear-gradient(135deg, #ffbe0b 0%, #fb5607 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 15px;
-        }
-        
-        .challenge-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-        
-        .challenge-reward {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-        }
-        
-        .transaction-form {
-            display: flex;
-            gap: 15px;
+        .chart-container {
+            height: 250px;
             margin-top: 20px;
         }
         
-        .transaction-form input, .transaction-form select {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
+        .dashboard-highlights {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .highlight-card {
             background: white;
-            transition: var(--transition);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: var(--shadow);
         }
         
-        .transaction-form input:focus, .transaction-form select:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        .highlight-title {
+            color: var(--gray);
+            font-size: 14px;
         }
         
-        #add-transaction {
-            background: var(--success);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
+        .highlight-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .highlight-change {
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
         }
         
-        #add-transaction:hover {
-            background: #27ae60;
-            transform: translateY(-3px);
+        .positive {
+            color: var(--success);
         }
         
-        .transactions {
-            grid-column: 1 / -1;
-            margin-top: 10px;
+        .negative {
+            color: var(--danger);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .dashboard-highlights {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .content-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                transition: var(--transition);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                grid-column: 1;
+                padding: 80px 20px 30px;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .dashboard-highlights {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+        }
+        
+        /* Section Content */
+        .section-content {
+            display: none;
+        }
+        
+        .section-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .transaction-list {
@@ -475,9 +385,6 @@
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
         }
         
         .transaction-item {
@@ -489,17 +396,6 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             transition: var(--transition);
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .transaction-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         
         .transaction-info {
@@ -521,32 +417,6 @@
             font-size: 18px;
         }
         
-        .transaction-date {
-            font-size: 12px;
-            color: var(--gray);
-        }
-        
-        .transaction-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .transaction-action {
-            background: rgba(0,0,0,0.05);
-            border-radius: 8px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .transaction-action:hover {
-            background: rgba(0,0,0,0.1);
-        }
-        
         .expense {
             color: var(--danger);
         }
@@ -555,587 +425,466 @@
             color: var(--success);
         }
         
-        .chart-container {
-            height: 250px;
-            margin-top: 20px;
+        .ai-chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
         }
         
-        /* Notifications */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            padding: 15px 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 15px;
-            z-index: 1000;
-            transform: translateX(120%);
-            transition: transform 0.4s ease;
         }
         
-        .notification.show {
-            transform: translateX(0);
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 15px;
         }
         
-        .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .buddy-message {
+            background: #e3f2fd;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            background: #d1ecf1;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        .notification.success .notification-icon {
-            background: rgba(46, 204, 113, 0.2);
-            color: var(--success);
-        }
-        
-        .notification.error .notification-icon {
-            background: rgba(247, 37, 133, 0.2);
-            color: var(--danger);
-        }
-        
-        .notification-content {
-            flex-grow: 1;
-        }
-        
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal-content {
+            padding: 15px;
             background: white;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transform: translateY(30px);
-            transition: transform 0.3s ease;
+            border-top: 1px solid #eee;
         }
         
-        .modal.show .modal-content {
-            transform: translateY(0);
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
         }
         
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .modal-close {
-            background: none;
+        .send-btn {
+            background: var(--primary);
+            color: white;
             border: none;
-            font-size: 24px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            margin-left: 10px;
             cursor: pointer;
-            color: var(--gray);
-            transition: var(--transition);
-        }
-        
-        .modal-close:hover {
-            color: var(--dark);
-        }
-        
-        .modal-body {
-            margin-bottom: 30px;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1100px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .app-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .app-header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .buddy-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .buddy-message:after {
-                left: 50%;
-                top: -10px;
-                transform: translateX(-50%) rotate(90deg);
-            }
-            
-            .transaction-form {
-                flex-direction: column;
-            }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- App Header -->
-        <header class="app-header">
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
             <div class="logo">
                 <div class="logo-icon">
                     <i class="fas fa-coins"></i>
                 </div>
-                <h1>Budget Buddy</h1>
+                <div class="logo-text">Budget Buddy</div>
             </div>
-            <div class="user-profile" id="user-profile">
+        </div>
+        
+        <div class="nav-section">
+            <h3 class="section-title">Financial Overview</h3>
+            <div class="nav-links">
+                <div class="nav-link active" data-section="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-link" data-section="accounts">
+                    <i class="fas fa-wallet"></i>
+                    <span>Accounts</span>
+                </div>
+                <div class="nav-link" data-section="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                </div>
+                <div class="nav-link" data-section="goals">
+                    <i class="fas fa-bullseye"></i>
+                    <span>Goals & Budgets</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h3 class="section-title">AI Features</h3>
+            <div class="nav-links">
+                <div class="nav-link" data-section="chat">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat with Buddy</span>
+                </div>
+                <div class="nav-link" data-section="forecast">
+                    <i class="fas fa-crystal-ball"></i>
+                    <span>Predictive Forecast</span>
+                </div>
+                <div class="nav-link" data-section="challenges">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Savings Challenges</span>
+                </div>
+                <div class="nav-link" data-section="coaching">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Financial Coaching</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h3 class="section-title">Settings</h3>
+            <div class="nav-links">
+                <div class="nav-link" data-section="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+                <div class="nav-link" data-section="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </div>
+                <div class="nav-link" data-section="security">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security</span>
+                </div>
+                <div class="nav-link" data-section="support">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & Support</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="premium-card">
+            <div class="premium-title">Unlock Premium Features</div>
+            <p>Advanced analytics, priority support, and more</p>
+            <button class="premium-btn">Upgrade Now</button>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <div class="user-profile">
                 <div class="user-avatar">JS</div>
                 <div>
                     <div class="user-name">John Smith</div>
                     <div class="user-status">Premium Member</div>
                 </div>
             </div>
-        </header>
+        </div>
         
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="sidebar-section">
-                <h3 class="sidebar-title"><i class="fas fa-home"></i> Dashboard</h3>
-                <div class="nav-links">
-                    <div class="nav-link active">
-                        <i class="fas fa-chart-pie"></i>
-                        <span>Financial Overview</span>
+        <!-- Dashboard Section -->
+        <div class="section-content active" id="dashboard">
+            <div class="dashboard-highlights">
+                <div class="highlight-card">
+                    <div class="highlight-title">Total Balance</div>
+                    <div class="highlight-value">$12,458.75</div>
+                    <div class="highlight-change positive">
+                        <i class="fas fa-arrow-up"></i> 5.2% from last month
                     </div>
-                    <div class="nav-link">
-                        <i class="fas fa-wallet"></i>
-                        <span>Accounts</span>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-title">Monthly Income</div>
+                    <div class="highlight-value">$4,250.00</div>
+                    <div class="highlight-change positive">
+                        <i class="fas fa-arrow-up"></i> 3.8% from last month
                     </div>
-                    <div class="nav-link">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>Transactions</span>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-title">Monthly Expenses</div>
+                    <div class="highlight-value">$2,845.30</div>
+                    <div class="highlight-change negative">
+                        <i class="fas fa-arrow-down"></i> 2.1% from last month
                     </div>
-                    <div class="nav-link">
-                        <i class="fas fa-bullseye"></i>
-                        <span>Goals & Budgets</span>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-title">Savings Rate</div>
+                    <div class="highlight-value">24.8%</div>
+                    <div class="highlight-change positive">
+                        <i class="fas fa-arrow-up"></i> 4.3% from last month
                     </div>
                 </div>
             </div>
             
-            <div class="sidebar-section">
-                <h3 class="sidebar-title"><i class="fas fa-robot"></i> AI Features</h3>
-                <div class="nav-links">
-                    <div class="nav-link">
-                        <i class="fas fa-comments"></i>
-                        <span>Chat with Buddy</span>
-                    </div>
-                    <div class="nav-link">
-                        <i class="fas fa-crystal-ball"></i>
-                        <span>Predictive Forecast</span>
-                    </div>
-                    <div class="nav-link">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Savings Challenges</span>
-                    </div>
-                    <div class="nav-link">
-                        <i class="fas fa-user-graduate"></i>
-                        <span>Financial Coaching</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="sidebar-section">
-                <h3 class="sidebar-title"><i class="fas fa-cog"></i> Settings</h3>
-                <div class="nav-links">
-                    <div class="nav-link">
-                        <i class="fas fa-user"></i>
-                        <span>Profile</span>
-                    </div>
-                    <div class="nav-link">
-                        <i class="fas fa-bell"></i>
-                        <span>Notifications</span>
-                    </div>
-                    <div class="nav-link">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Security</span>
-                    </div>
-                    <div class="nav-link">
-                        <i class="fas fa-question-circle"></i>
-                        <span>Help & Support</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="nav-links">
-                    <div class="nav-link">
-                        <i class="fas fa-rocket"></i>
-                        <span>Upgrade to Premium</span>
-                    </div>
-                </div>
-            </div>
-        </aside>
-        
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- AI Assistant Section -->
-            <section class="buddy-container">
-                <div class="buddy-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="buddy-content">
-                    <div class="buddy-message" id="buddy-message">
-                        Hi John! I'm your Budget Buddy. I see you've spent $245 on dining this month. Would you like me to suggest ways to save 20% on food expenses?
-                    </div>
-                    <div class="voice-controls">
-                        <button id="voice-btn" class="action-btn">
-                            <i class="fas fa-microphone"></i>
-                            Speak to Buddy
-                        </button>
-                        <button id="suggest-btn" class="action-btn secondary">
-                            <i class="fas fa-lightbulb"></i>
-                            Get Savings Suggestions
-                        </button>
-                        <button id="report-btn" class="action-btn warning">
-                            <i class="fas fa-chart-bar"></i>
-                            Generate Report
-                        </button>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Financial Personality Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-user-tag"></i> Financial Personality</h2>
-                    <div class="card-actions">
-                        <div class="card-action">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                        <div class="card-action">
-                            <i class="fas fa-info-circle"></i>
+            <div class="content-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-chart-line"></i> Spending Overview</h2>
+                        <div class="card-actions">
+                            <div class="card-action">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="personality-profile">
-                    <div class="profile-type" id="profile-type">Impulsive Spender</div>
-                    <div class="profile-desc">
-                        You enjoy spontaneous purchases but sometimes exceed your budget. Your main opportunities are dining out and entertainment.
+                    <div class="chart-container">
+                        <canvas id="spendingChart"></canvas>
                     </div>
-                    <div class="profile-tip">
-                        <i class="fas fa-lightbulb"></i> Tip: Try setting a weekly "fun money" limit to balance enjoyment and savings.
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Forecast Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-chart-line"></i> Next Month Forecast</h2>
-                    <div class="card-actions">
-                        <div class="card-action">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="forecast-value" id="forecast-amount">$3,245</div>
-                <div class="forecast-trend">
-                    <i class="fas fa-arrow-down"></i> 8.5% less than this month
-                </div>
-                <div class="progress-container">
-                    <div class="progress-header">
-                        <span>Forecast Accuracy</span>
-                        <span>87%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 87%"></div>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="forecast-chart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Savings Challenge Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-trophy"></i> Savings Challenge</h2>
-                    <div class="card-actions">
-                        <div class="card-action">
-                            <i class="fas fa-plus"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="challenge-card">
-                    <div class="challenge-title">Coffee Saver Challenge</div>
-                    <p>Save $50 this month by reducing coffee shop purchases</p>
-                    <div class="progress-container">
-                        <div class="progress-header">
-                            <span>Progress</span>
-                            <span>$32/$50</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 64%"></div>
-                        </div>
-                    </div>
-                    <div class="challenge-reward">
-                        <i class="fas fa-gem"></i>
-                        <span>Reward: 50 Buddy Points + Financial Tips eBook</span>
-                    </div>
-                </div>
-                <button class="action-btn success" style="margin-top: 15px; width: 100%;">
-                    <i class="fas fa-check-circle"></i> Complete Challenge
-                </button>
-            </div>
-            
-            <!-- Add Transaction Section -->
-            <section class="transactions card">
-                <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-plus-circle"></i> Add Transaction</h2>
-                </div>
-                <div class="transaction-form">
-                    <input type="text" id="transaction-desc" placeholder="What was this for?">
-                    <input type="number" id="transaction-amt" placeholder="$ Amount">
-                    <select id="transaction-type">
-                        <option value="expense">Expense</option>
-                        <option value="income">Income</option>
-                    </select>
-                    <select id="transaction-category">
-                        <option value="food">Food & Dining</option>
-                        <option value="shopping">Shopping</option>
-                        <option value="transport">Transportation</option>
-                        <option value="entertainment">Entertainment</option>
-                        <option value="utilities">Utilities</option>
-                        <option value="salary">Salary</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <button id="add-transaction">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
                 </div>
                 
-                <div class="card-header" style="margin-top: 30px;">
-                    <h2 class="card-title"><i class="fas fa-list"></i> Recent Transactions</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-percentage"></i> Budget Distribution</h2>
+                        <div class="card-actions">
+                            <div class="card-action">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-trophy"></i> Savings Challenge</h2>
+                        <div class="card-actions">
+                            <div class="card-action">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="challenge-card">
+                        <div class="challenge-title">Coffee Saver Challenge</div>
+                        <p>Save $50 this month by reducing coffee shop purchases</p>
+                        <div class="progress-container" style="margin: 20px 0;">
+                            <div class="progress-header">
+                                <span>Progress</span>
+                                <span>$32/$50</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 64%; height: 12px; background: var(--success); border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                        <div class="challenge-reward">
+                            <i class="fas fa-gem"></i>
+                            <span>Reward: 50 Buddy Points + Financial Tips eBook</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="fas fa-lightbulb"></i> Financial Tips</h2>
+                        <div class="card-actions">
+                            <div class="card-action">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tip-list" style="margin-top: 15px;">
+                        <div class="tip-item" style="padding: 15px; border-bottom: 1px solid #eee; display: flex; gap: 15px;">
+                            <div style="width: 40px; height: 40px; background: rgba(67, 97, 238, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Reduce coffee expenses</div>
+                                <div style="color: var(--gray); font-size: 14px;">You've spent $85 on coffee this month</div>
+                            </div>
+                        </div>
+                        <div class="tip-item" style="padding: 15px; border-bottom: 1px solid #eee; display: flex; gap: 15px;">
+                            <div style="width: 40px; height: 40px; background: rgba(46, 204, 113, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--success);">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Increase savings rate</div>
+                                <div style="color: var(--gray); font-size: 14px;">You're saving 24% - aim for 30%</div>
+                            </div>
+                        </div>
+                        <div class="tip-item" style="padding: 15px; display: flex; gap: 15px;">
+                            <div style="width: 40px; height: 40px; background: rgba(247, 37, 133, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--danger);">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Limit impulse shopping</div>
+                                <div style="color: var(--gray); font-size: 14px;">You spent $245 on unplanned purchases</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Transactions Section -->
+        <div class="section-content" id="transactions">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-exchange-alt"></i> Transaction History</h2>
                     <div class="card-actions">
                         <div class="card-action">
                             <i class="fas fa-filter"></i>
                         </div>
                         <div class="card-action">
-                            <i class="fas fa-download"></i>
+                            <i class="fas fa-plus"></i>
                         </div>
                     </div>
                 </div>
-                <div class="transaction-list" id="transaction-list">
-                    <!-- Transactions will be added here dynamically -->
+                <div class="transaction-list">
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>Grocery Shopping</div>
+                            <div class="transaction-category">
+                                <i class="fas fa-utensils"></i> Food & Dining
+                            </div>
+                        </div>
+                        <div class="transaction-amount expense">-$85.30</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>Monthly Salary</div>
+                            <div class="transaction-category">
+                                <i class="fas fa-money-check"></i> Income
+                            </div>
+                        </div>
+                        <div class="transaction-amount income">+$3,200.00</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>Electricity Bill</div>
+                            <div class="transaction-category">
+                                <i class="fas fa-bolt"></i> Utilities
+                            </div>
+                        </div>
+                        <div class="transaction-amount expense">-$120.50</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>Restaurant Dinner</div>
+                            <div class="transaction-category">
+                                <i class="fas fa-utensils"></i> Food & Dining
+                            </div>
+                        </div>
+                        <div class="transaction-amount expense">-$67.80</div>
+                    </div>
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>Online Shopping</div>
+                            <div class="transaction-category">
+                                <i class="fas fa-shopping-bag"></i> Shopping
+                            </div>
+                        </div>
+                        <div class="transaction-amount expense">-$45.99</div>
+                    </div>
                 </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <div class="notification-icon">
-            <i class="fas fa-check"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-title">Success!</div>
-            <div class="notification-message">Transaction added successfully</div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal" id="report-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Monthly Financial Report</h3>
-                <button class="modal-close" id="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Your personalized financial report is ready. Here's a summary:</p>
-                <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li>Total Income: <strong>$4,250.00</strong></li>
-                    <li>Total Expenses: <strong>$2,845.30</strong></li>
-                    <li>Net Savings: <strong>$1,404.70</strong></li>
-                    <li>Top Spending Category: Food & Dining ($845)</li>
-                    <li>Budget Adherence: 78%</li>
-                </ul>
-                <p>You're on track to meet your savings goal this month!</p>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="action-btn" style="flex: 1;">
-                    <i class="fas fa-download"></i> Download PDF
-                </button>
-                <button class="action-btn secondary" style="flex: 1;">
-                    <i class="fas fa-share-alt"></i> Share Report
-                </button>
             </div>
         </div>
-    </div>
+        
+        <!-- AI Chat Section -->
+        <div class="section-content" id="chat">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-comments"></i> Chat with Budget Buddy</h2>
+                    <div class="card-actions">
+                        <div class="card-action">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-chat-container">
+                    <div class="chat-messages">
+                        <div class="message buddy-message">
+                            Hi John! I'm your Budget Buddy. How can I help with your finances today?
+                        </div>
+                        <div class="message user-message">
+                            Can you give me some tips to save on groceries?
+                        </div>
+                        <div class="message buddy-message">
+                            Absolutely! Here are 3 ways to save on groceries:
+                            1. Plan meals for the week and make a shopping list
+                            2. Buy in bulk for non-perishable items
+                            3. Use cashback apps for grocery purchases
+                        </div>
+                        <div class="message user-message">
+                            That's helpful! What about dining out?
+                        </div>
+                        <div class="message buddy-message">
+                            For dining out:
+                            - Limit to once per week
+                            - Use coupons and loyalty programs
+                            - Choose lunch specials instead of dinner
+                            - Skip alcoholic beverages
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Ask Budget Buddy...">
+                        <button class="send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Forecast Section -->
+        <div class="section-content" id="forecast">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-crystal-ball"></i> Financial Forecast</h2>
+                    <div class="card-actions">
+                        <div class="card-action">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container" style="height: 400px;">
+                    <canvas id="forecastChart"></canvas>
+                </div>
+                <div style="padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 15px;">
+                        <div style="font-weight: 600; margin-bottom: 10px;">Income Forecast</div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">$4,380</div>
+                        <div style="color: var(--success); margin-top: 5px;">
+                            <i class="fas fa-arrow-up"></i> 3.1% increase expected
+                        </div>
+                    </div>
+                    <div style="background: #ffecb3; padding: 15px; border-radius: 15px;">
+                        <div style="font-weight: 600; margin-bottom: 10px;">Expense Forecast</div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--warning);">$2,920</div>
+                        <div style="color: var(--danger); margin-top: 5px;">
+                            <i class="fas fa-arrow-up"></i> 2.6% increase expected
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        // Sample transaction data
-        const sampleTransactions = [
-            { id: 1, description: "Grocery Shopping", amount: -85.30, category: "food", date: "2023-06-10" },
-            { id: 2, description: "Monthly Salary", amount: 3200.00, category: "salary", date: "2023-06-05" },
-            { id: 3, description: "Electricity Bill", amount: -120.50, category: "utilities", date: "2023-06-03" },
-            { id: 4, description: "Restaurant Dinner", amount: -67.80, category: "food", date: "2023-06-02" },
-            { id: 5, description: "Online Shopping", amount: -45.99, category: "shopping", date: "2023-06-01" },
-            { id: 6, description: "Gas Refill", amount: -55.00, category: "transport", date: "2023-05-29" },
-            { id: 7, description: "Freelance Work", amount: 850.00, category: "income", date: "2023-05-28" }
-        ];
-        
-        // Financial Personality Detection
-        const detectFinancialPersonality = (transactions) => {
-            const impulseCount = transactions.filter(t => 
-                t.amount < -50 && ['food', 'shopping', 'entertainment'].includes(t.category)
-            ).length;
-            
-            const savingsCount = transactions.filter(t => 
-                t.amount > 0
-            ).length;
-            
-            if (impulseCount > 3) return "Impulsive Spender";
-            if (savingsCount > 5) return "Savings Expert";
-            return "Balanced Planner";
-        };
-        
-        // Predictive Forecasting
-        const predictNextMonth = (transactions) => {
-            const expenses = transactions.filter(t => t.amount < 0);
-            const income = transactions.filter(t => t.amount > 0);
-            
-            if (expenses.length === 0 || income.length === 0) return 0;
-            
-            const avgExpense = expenses.reduce((sum, t) => sum + t.amount, 0) / expenses.length;
-            const avgIncome = income.reduce((sum, t) => sum + t.amount, 0) / income.length;
-            
-            // Simple prediction: 5% improvement from average
-            return (avgIncome + (avgExpense * 0.95)).toFixed(2);
-        };
-        
-        // Format currency
-        const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2
-            }).format(Math.abs(amount));
-        };
-        
-        // Format date
-        const formatDate = (dateString) => {
-            const options = { month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString('en-US', options);
-        };
-        
-        // Show notification
-        const showNotification = (type, title, message) => {
-            const notification = document.getElementById('notification');
-            notification.className = `notification ${type} show`;
-            notification.querySelector('.notification-title').textContent = title;
-            notification.querySelector('.notification-message').textContent = message;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        };
-        
-        // Render transactions
-        const renderTransactions = () => {
-            const container = document.getElementById('transaction-list');
-            container.innerHTML = '';
-            
-            sampleTransactions.forEach(transaction => {
-                const transactionEl = document.createElement('div');
-                transactionEl.className = 'transaction-item';
-                
-                const isExpense = transaction.amount < 0;
-                const amountClass = isExpense ? 'expense' : 'income';
-                const sign = isExpense ? '-' : '+';
-                const icon = isExpense ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
-                
-                const categoryIcons = {
-                    'food': 'fas fa-utensils',
-                    'shopping': 'fas fa-shopping-bag',
-                    'transport': 'fas fa-car',
-                    'entertainment': 'fas fa-film',
-                    'utilities': 'fas fa-bolt',
-                    'salary': 'fas fa-money-check',
-                    'income': 'fas fa-money-bill-wave',
-                    'other': 'fas fa-question-circle'
-                };
-                
-                transactionEl.innerHTML = `
-                    <div class="transaction-info">
-                        <div class="transaction-description">${transaction.description}</div>
-                        <div class="transaction-category">
-                            <i class="${categoryIcons[transaction.category] || categoryIcons['other']}"></i>
-                            ${transaction.category.charAt(0).toUpperCase() + transaction.category.slice(1)}
-                        </div>
-                        <div class="transaction-date">${formatDate(transaction.date)}</div>
-                    </div>
-                    <div class="transaction-amount ${amountClass}">
-                        ${sign} ${formatCurrency(transaction.amount)}
-                    </div>
-                    <div class="transaction-actions">
-                        <div class="transaction-action">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="transaction-action">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                    </div>
-                `;
-                
-                container.appendChild(transactionEl);
-            });
-        };
-        
-        // Initialize chart
-        const initChart = () => {
-            const ctx = document.getElementById('forecast-chart').getContext('2d');
-            new Chart(ctx, {
+        // Initialize charts
+        function initCharts() {
+            // Spending Chart
+            const spendingCtx = document.getElementById('spendingChart').getContext('2d');
+            new Chart(spendingCtx, {
                 type: 'bar',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
-                        label: 'Actual Spending',
-                        data: [3200, 2900, 3100, 2950, 3050, 2850, 2800],
+                        label: 'Spending',
+                        data: [2450, 2630, 2250, 2780, 2540, 2845],
                         backgroundColor: 'rgba(67, 97, 238, 0.7)',
                         borderColor: 'rgba(67, 97, 238, 1)',
-                        borderWidth: 1
-                    }, {
-                        label: 'Forecast',
-                        data: [3000, 2950, 3050, 3000, 3100, 2900, 2850],
-                        backgroundColor: 'rgba(46, 204, 113, 0.7)',
-                        borderColor: 'rgba(46, 204, 113, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -1157,119 +906,127 @@
                     },
                     plugins: {
                         legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Spending vs Forecast'
+                            display: false
                         }
                     }
                 }
             });
-        };
+            
+            // Budget Chart
+            const budgetCtx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(budgetCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Housing', 'Food', 'Transport', 'Entertainment', 'Utilities', 'Savings'],
+                    datasets: [{
+                        data: [35, 20, 15, 10, 10, 10],
+                        backgroundColor: [
+                            '#4361ee',
+                            '#4cc9f0',
+                            '#2ecc71',
+                            '#ffbe0b',
+                            '#f72585',
+                            '#3a0ca3'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Forecast Chart
+            const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+            new Chart(forecastCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Actual',
+                        data: [3200, 2900, 3100, 2950, 3050, 2845, null, null, null, null, null, null],
+                        borderColor: '#4361ee',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        fill: false
+                    }, {
+                        label: 'Forecast',
+                        data: [null, null, null, null, null, 2845, 2800, 2750, 2900, 2950, 3100, 3200],
+                        borderColor: '#2ecc71',
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        tension: 0.2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
         
-        // Voice Assistant
-        document.getElementById('voice-btn').addEventListener('click', () => {
-            const voiceBtn = document.getElementById('voice-btn');
-            const buddyMessage = document.getElementById('buddy-message');
+        // Navigation functionality
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sectionContents = document.querySelectorAll('.section-content');
+            const pageTitle = document.getElementById('pageTitle');
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
             
-            // Toggle listening state
-            voiceBtn.classList.toggle('listening');
+            // Set active section
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Remove active class from all links and sections
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    sectionContents.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Show corresponding section
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                    
+                    // Update page title
+                    pageTitle.textContent = this.querySelector('span').textContent;
+                    
+                    // Close sidebar on mobile after selection
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
             
-            if (voiceBtn.classList.contains('listening')) {
-                voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i> Stop Listening';
-                buddyMessage.textContent = "I'm listening... How can I help with your budget today?";
-            } else {
-                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i> Speak to Buddy';
-                
-                // Simulate voice command response
-                const commands = [
-                    "You said: 'What did I spend on dining this month?' You've spent $245 on dining so far.",
-                    "You said: 'Show me my savings progress.' You've saved $320 towards your $500 goal this month.",
-                    "You said: 'Create a new budget for groceries.' I've set a $400 monthly budget for groceries.",
-                    "You said: 'Analyze my spending patterns.' I've noticed a 15% increase in entertainment expenses compared to last month."
-                ];
-                
-                buddyMessage.textContent = commands[Math.floor(Math.random() * commands.length)];
-            }
-        });
-        
-        // Add Transaction
-        document.getElementById('add-transaction').addEventListener('click', () => {
-            const desc = document.getElementById('transaction-desc').value;
-            const amount = parseFloat(document.getElementById('transaction-amt').value);
-            const type = document.getElementById('transaction-type').value;
-            const category = document.getElementById('transaction-category').value;
-            
-            if (!desc || isNaN(amount)) {
-                showNotification('error', 'Error', 'Please enter a valid description and amount');
-                return;
-            }
-            
-            const transaction = {
-                id: sampleTransactions.length + 1,
-                description: desc,
-                amount: type === 'expense' ? -amount : amount,
-                category: category,
-                date: new Date().toISOString().split('T')[0]
-            };
-            
-            sampleTransactions.unshift(transaction);
-            renderTransactions();
-            
-            // Reset form
-            document.getElementById('transaction-desc').value = '';
-            document.getElementById('transaction-amt').value = '';
-            
-            // Update UI
-            document.getElementById('profile-type').textContent = detectFinancialPersonality(sampleTransactions);
-            document.getElementById('forecast-amount').textContent = formatCurrency(predictNextMonth(sampleTransactions));
-            
-            // Show confirmation
-            showNotification('success', 'Success', `Added ${type} of ${formatCurrency(amount)} for ${desc}`);
-            
-            // Update buddy message
-            document.getElementById('buddy-message').textContent = `Got it! I've added your ${type} of ${formatCurrency(amount)} for ${desc}.`;
-        });
-        
-        // Savings suggestions
-        document.getElementById('suggest-btn').addEventListener('click', () => {
-            const suggestions = [
-                "Based on your spending, I suggest reducing dining out by 30% to save $150/month.",
-                "You could save $50/month by canceling unused subscriptions.",
-                "Try using public transportation twice a week to save $80/month on gas.",
-                "Consider meal prepping to save $120/month on food expenses.",
-                "Switch to a cheaper phone plan to save $30/month."
-            ];
-            
-            document.getElementById('buddy-message').textContent = suggestions[Math.floor(Math.random() * suggestions.length)];
-            showNotification('success', 'Savings Tip', 'New savings suggestions available!');
-        });
-        
-        // Generate report
-        document.getElementById('report-btn').addEventListener('click', () => {
-            document.getElementById('report-modal').classList.add('show');
-        });
-        
-        // Close modal
-        document.getElementById('modal-close').addEventListener('click', () => {
-            document.getElementById('report-modal').classList.remove('show');
-        });
+            // Toggle sidebar on mobile
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+        }
         
         // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTransactions();
-            initChart();
-            document.getElementById('profile-type').textContent = detectFinancialPersonality(sampleTransactions);
-            document.getElementById('forecast-amount').textContent = formatCurrency(predictNextMonth(sampleTransactions));
-            
-            // Set initial buddy message
-            document.getElementById('buddy-message').textContent = "Hi John! I'm your Budget Buddy. I see you've spent $245 on dining this month. Would you like me to suggest ways to save 20% on food expenses?";
-            
-            // Simulate loading
-            setTimeout(() => {
-                showNotification('success', 'Welcome Back!', 'Your financial dashboard is ready');
-            }, 1000);
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            setupNavigation();
         });
     </script>
 </body>
